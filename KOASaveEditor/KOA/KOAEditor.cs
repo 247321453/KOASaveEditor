@@ -7,9 +7,9 @@
  * 要改变这种模板请点击 工具|选项|代码编写|编辑标准头文件
  */
 using System;
-using System.Text;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace KOASaveEditor.KOA
 {
@@ -19,6 +19,10 @@ namespace KOASaveEditor.KOA
 	public class KOAEditor
 	{
 		#region init
+		/// <summary>
+		/// 以效果列表文件构造
+		/// </summary>
+		/// <param name="effectFile">效果列表文件</param>
 		public KOAEditor(string effectFile)
 		{
 			bitstream=new BitStream();
@@ -33,7 +37,13 @@ namespace KOASaveEditor.KOA
 		/// 装备属性头部指示属性数量的数据相对装备数据头部的偏移量
 		/// </summary>
 		public static int WeaponAttHeadOffSet = 21;
+		/// <summary>
+		/// 适用游戏版本
+		/// </summary>
 		public static string GameVersion = "1.0.2";
+		/// <summary>
+		/// 是否打开存档
+		/// </summary>
 		public bool isOpen
 		{
 			get{
@@ -43,28 +53,69 @@ namespace KOASaveEditor.KOA
 					return false;
 			}
 		}
-		public BitStream bitstream;
+		BitStream bitstream;
 		int pos_bagcount;
 		int pos_exp;
 		string filename;
-		public string playername;
+
 		byte[] equitHead;
 		byte[] sepbyte;
+		
+		string playername;
+		/// <summary>
+		/// 当背包上限
+		/// </summary>
 		public int bagCount;
+		/// <summary>
+		/// 总经验
+		/// </summary>
 		public int allExp;
+		/// <summary>
+		/// 距离下一级的经验
+		/// </summary>
 		public int nextExp;
+		/// <summary>
+		/// 当前等级获取的经验
+		/// </summary>
 		public int curExp;
+		/// <summary>
+		/// 名字的第一次出现位置
+		/// </summary>
 		public static int nameIndex=17;
+		/// <summary>
+		/// 背包最大值
+		/// </summary>
 		public static int bagMaxCount=int.MaxValue;
-		public static int nameMaxLength=0xff;
-		public static int MaxEffectCount=0xff;
+		/// <summary>
+		/// 名字最大长度
+		/// </summary>
+		public static int nameMaxLength=byte.MaxValue;
+		/// <summary>
+		/// 最大效果数
+		/// </summary>
+		public static int MaxEffectCount=byte.MaxValue;
+		/// <summary>
+		/// 所有装备
+		/// </summary>
 		public SortedList<int, EquipItem> Eitems;
+		/// <summary>
+		/// 最大耐久值
+		/// </summary>
 		public static int MaxDur=0x64;
+		/// <summary>
+		/// 当前装备
+		/// </summary>
 		public SortedList<int, EquipItem> searchEitems;
+		/// <summary>
+		/// 默认名字
+		/// </summary>
 		public static string nuname="unkown";
 		#endregion
 		
 		#region level
+		/// <summary>
+		/// 等级所需经验
+		/// </summary>
 		public static int[] Level=new int[]{
 			500,
 			1100,
@@ -112,12 +163,20 @@ namespace KOASaveEditor.KOA
 		#endregion
 		
 		#region file
+		/// <summary>
+		/// 打开存档
+		/// </summary>
+		/// <param name="file">存档文件</param>
+		/// <returns></returns>
 		public bool Open(string file)
 		{
 			this.filename=file;
 			return bitstream.Open(file);
 		}
-		
+		/// <summary>
+		/// 另存为新存档
+		/// </summary>
+		/// <param name="file">新存档</param>
 		public void SaveAs(string file)
 		{
 			if(!isOpen)
@@ -125,10 +184,16 @@ namespace KOASaveEditor.KOA
 			File.Copy(file, file+".bak",true);
 			bitstream.SaveAs(file);
 		}
+		/// <summary>
+		/// 重新加载存档
+		/// </summary>
 		public void Reload()
 		{
 			Open(filename);
 		}
+		/// <summary>
+		/// 保存存档
+		/// </summary>
 		public void Save()
 		{
 			if(!isOpen)
@@ -139,6 +204,10 @@ namespace KOASaveEditor.KOA
 		#endregion
 		
 		#region bag
+		/// <summary>
+		/// 获取背包上限
+		/// </summary>
+		/// <returns>背包上限，失败则返回负数</returns>
 		public int GetBagCount()
 		{
 			if(!isOpen)
@@ -183,6 +252,11 @@ namespace KOASaveEditor.KOA
 			bagCount=count;
 			return count;
 		}
+		/// <summary>
+		/// 保存背包上限
+		/// </summary>
+		/// <param name="count">新的背包上限</param>
+		/// <returns>是否成功</returns>
 		public bool SetBagCount(int count)
 		{
 			if(!isOpen)
@@ -198,8 +272,11 @@ namespace KOASaveEditor.KOA
 		#endregion
 		
 		#region edit
-		//删除装备
-		public void DeleteEquipById(int weaponIndex)
+		/// <summary>
+		/// 删除装备
+		/// </summary>
+		/// <param name="weaponIndex">装备位置</param>
+		public void DeleteEquipByIndex(int weaponIndex)
 		{
 			if(!isOpen)
 				return ;
@@ -213,7 +290,7 @@ namespace KOASaveEditor.KOA
 		/// <summary>
 		/// 保存装备
 		/// </summary>
-		/// <param name="eitem"></param>
+		/// <param name="eitem">装备</param>
 		public void SaveEquip(EquipItem eitem)
 		{
 			if(!isOpen)
@@ -221,13 +298,6 @@ namespace KOASaveEditor.KOA
 			bitstream.Remove(eitem.WeaponIndex, eitem.OldLength);
 			bitstream.InsertBytes(eitem.WeaponIndex, eitem.Datas);
 			GetEquips();
-		}
-		#endregion
-		
-		#region effect
-		public SortedList<int, string> GetEffectList()
-		{
-			return Effect.effectList;
 		}
 		#endregion
 		
@@ -271,7 +341,7 @@ namespace KOASaveEditor.KOA
 					int attCount = bitstream.GetInt32(attHeadIndex);
 					int endIndex = 0;
 					temp=attHeadIndex + 22 + attCount * 8;
-					if (bitstream.Get(temp) != 1)//无名字
+					if (bitstream.GetByte(temp) != 1)//无名字
 					{
 						endIndex = temp;
 					}
@@ -300,6 +370,10 @@ namespace KOASaveEditor.KOA
 		#endregion
 		
 		#region search equip
+		/// <summary>
+		/// 搜索装备 by 名字
+		/// </summary>
+		/// <param name="name"></param>
 		public void SearchByName(string name)
 		{
 			searchEitems.Clear();
@@ -311,6 +385,11 @@ namespace KOASaveEditor.KOA
 				}
 			}
 		}
+		/// <summary>
+		/// 搜索装备 by 耐久
+		/// </summary>
+		/// <param name="curdur"></param>
+		/// <param name="maxdur"></param>
 		public void SearchByDur(float curdur,float maxdur)
 		{
 			searchEitems.Clear();
@@ -325,6 +404,12 @@ namespace KOASaveEditor.KOA
 				}
 			}
 		}
+		/// <summary>
+		/// 搜索装备
+		/// </summary>
+		/// <param name="name">关键字，为null时，不做搜索条件</param>
+		/// <param name="curdur">当前耐久，为0时不做搜索条件</param>
+		/// <param name="maxdur">最大耐久，为0时不做搜索条件</param>
 		public void Search(string name ,float curdur,float maxdur)
 		{
 			searchEitems.Clear();
@@ -335,12 +420,12 @@ namespace KOASaveEditor.KOA
 					if(item.Name.IndexOf(name,StringComparison.OrdinalIgnoreCase)<0)
 						continue;
 				}
-				if(item.CurDurability != 0)
+				if(item.CurDurability > 0)
 				{
 					if(item.CurDurability.ToString().IndexOf(curdur.ToString())<0)
 						continue;
 				}
-				if(item.MaxDurability != 0)
+				if(item.MaxDurability > 0)
 				{
 					if(item.MaxDurability.ToString().IndexOf(maxdur.ToString())<0)
 						continue;
@@ -353,6 +438,7 @@ namespace KOASaveEditor.KOA
 		#endregion
 		
 		#region exp
+		//根据等级计算总经验
 		int SumExp(int level)
 		{
 			if(level >= KOAEditor.Level.Length)
@@ -364,7 +450,13 @@ namespace KOASaveEditor.KOA
 			}
 			return exps;
 		}
-		//XX XX XX XX 06 00 00 00 00 00 00 00
+		/// <summary>
+		/// 根据等级和当前等级经验，获取经验值位置
+		/// XX XX XX XX 06 00 00 00 00 00 00 00 XX XX XX XX
+		/// </summary>
+		/// <param name="level">等级</param>
+		/// <param name="nowexp">当前等级经验</param>
+		/// <returns>经验值位置，失败为负数</returns>
 		public int GetExp(int level,int nowexp)
 		{
 			if(!isOpen)
@@ -387,6 +479,11 @@ namespace KOASaveEditor.KOA
 			}
 			return -1;
 		}
+		/// <summary>
+		/// 保存总经验
+		/// </summary>
+		/// <param name="exp">总经验</param>
+		/// <returns>是否保存成功</returns>
 		public bool SetExp(int exp)
 		{
 			if(!isOpen)
@@ -397,6 +494,11 @@ namespace KOASaveEditor.KOA
 			bitstream.InsertInt32(pos_exp+4+8, exp);
 			return true;
 		}
+		/// <summary>
+		/// 保存等级
+		/// </summary>
+		/// <param name="level">等级</param>
+		/// <returns>是否保存成功</returns>
 		public bool SetLevel(int level)
 		{
 			int exps=SumExp(level);
@@ -405,7 +507,11 @@ namespace KOASaveEditor.KOA
 		#endregion
 		
 		#region name
-		public string Getname()
+		/// <summary>
+		/// 获取玩家名
+		/// </summary>
+		/// <returns></returns>
+		public string GetnPlayerName()
 		{
 			if(!isOpen)
 				return "";
@@ -413,7 +519,12 @@ namespace KOASaveEditor.KOA
 			playername=name;
 			return name;
 		}
-		public bool Setname(string name)
+		/// <summary>
+		/// 设置玩家名
+		/// </summary>
+		/// <param name="name">新名字</param>
+		/// <returns></returns>
+		public bool SetPlayerName(string name)
 		{
 			if(!isOpen)
 				return false;

@@ -35,6 +35,7 @@ namespace KOASaveEditor
 			InitializeComponent();
 			effectFile=Path.Combine(Application.StartupPath,"attribute.txt");
 			roaedit=new KOAEditor(effectFile);
+			this.Text+=" Ver:"+Application.ProductVersion;
 			title=this.Text;
 			cb_level.Items.Clear();
 			for(int i=0;i<=40;i++)
@@ -72,7 +73,7 @@ namespace KOASaveEditor
 			this.Text=Path.GetFileName(savefile)+" - "+title;
 			roaedit.Open(savefile);
 			tb_bagcount.Text=roaedit.GetBagCount().ToString();
-			tb_name.Text=roaedit.Getname();
+			tb_name.Text=roaedit.GetnPlayerName();
 			roaedit.GetEquips();
 			searchEitems=roaedit.Eitems;
 			RefreshEquips();
@@ -81,7 +82,7 @@ namespace KOASaveEditor
 		{
 			roaedit.Reload();
 			tb_bagcount.Text=roaedit.GetBagCount().ToString();
-			tb_name.Text=roaedit.Getname();
+			tb_name.Text=roaedit.GetnPlayerName();
 			roaedit.GetEquips();
 			searchEitems=roaedit.Eitems;
 			RefreshEquips();
@@ -145,10 +146,10 @@ namespace KOASaveEditor
 		void btn_modnameClick(object sender, EventArgs e)
 		{
 			string name=tb_name.Text;
-			if(!roaedit.Setname(name))
+			if(!roaedit.SetPlayerName(name))
 			{
 				MessageBox.Show("名字修改失败！","警告");
-				tb_name.Text=roaedit.Getname();
+				tb_name.Text=roaedit.GetnPlayerName();
 				return;
 			}
 		}
@@ -272,7 +273,7 @@ namespace KOASaveEditor
 		
 		void btn_DeleteEquipClick(object sender, EventArgs e)
 		{
-			roaedit.DeleteEquipById(GetCurEquipIndex());
+			roaedit.DeleteEquipByIndex(GetCurEquipIndex());
 		}
 		#endregion
 		

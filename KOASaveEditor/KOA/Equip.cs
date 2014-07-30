@@ -26,12 +26,15 @@ namespace KOASaveEditor.KOA
 		/// </summary>
 		public int WeaponIndex;
 		/// <summary>
-		/// 长度
+		/// 当前长度
 		/// </summary>
 		public int Length
 		{
 			get{return Datas.Length;}
 		}
+		/// <summary>
+		/// 初始的长度
+		/// </summary>
 		public int OldLength;
 		/// <summary>
 		/// 装备代码
@@ -68,7 +71,7 @@ namespace KOASaveEditor.KOA
 		{
 			get
 			{
-				if (mBitstream.Get(KOAEditor.WeaponAttHeadOffSet + 22 + EffectCount * 8) != 1)
+				if (mBitstream.GetByte(KOAEditor.WeaponAttHeadOffSet + 22 + EffectCount * 8) != 1)
 				{
 					return KOAEditor.nuname;
 				}
@@ -160,7 +163,11 @@ namespace KOASaveEditor.KOA
 				return attList.ToArray();
 			}
 		}
-		
+		/// <summary>
+		/// 添加效果
+		/// </summary>
+		/// <param name="ef">新效果</param>
+		/// <returns>是否添加成功</returns>
 		public bool AddEffect(Effect ef)
 		{
 			List<Effect> list=new List<Effect>();
@@ -173,6 +180,11 @@ namespace KOASaveEditor.KOA
 			}
 			return false;
 		}
+		/// <summary>
+		/// 移除效果
+		/// </summary>
+		/// <param name="ef">效果</param>
+		/// <returns>是否移除成功</returns>
 		public bool RemoveEffect(Effect ef)
 		{
 			List<Effect> list=new List<Effect>();
@@ -188,7 +200,10 @@ namespace KOASaveEditor.KOA
 			}
 			return false;
 		}
-		//bug
+		/// <summary>
+		/// 保存效果
+		/// </summary>
+		/// <param name="efs">效果数组</param>
 		public void ReEffects(Effect[] efs)
 		{
 			int i=efs.Length-1;
@@ -203,7 +218,12 @@ namespace KOASaveEditor.KOA
 				mBitstream.InsertBytes(KOAEditor.WeaponAttHeadOffSet + 8, news);
 			}
 		}
-		public bool isChange(EquipItem eitem)
+		/// <summary>
+		/// 是否改变
+		/// </summary>
+		/// <param name="eitem">比较装备</param>
+		/// <returns>是否一致</returns>
+		public bool isSame(EquipItem eitem)
 		{
 			if(eitem.Length!=Length)
 				return false;

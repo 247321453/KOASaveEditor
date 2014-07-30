@@ -19,12 +19,29 @@ namespace KOASaveEditor.KOA
 	/// </summary>
 	public class Effect
 	{
+		/// <summary>
+		/// 以效果ID构造
+		/// </summary>
+		/// <param name="code"></param>
 		public Effect(int code)
 		{
 			this.Code=code;
 		}
+		/// <summary>
+		/// 效果ID+效果描述 列表
+		/// </summary>
 		public static List<string> effecttext=new  List<string>();
+		/// <summary>
+		/// 效果列表
+		/// key 效果ID
+		/// value 效果描述
+		/// </summary>
 		public static SortedList<int, string> effectList=new SortedList<int, string>();
+		/// <summary>
+		/// 加载效果列表
+		/// </summary>
+		/// <param name="file">效果列表文件</param>
+		/// <returns>读取是否成功</returns>
 		public static bool LoadEffect(string file)
 		{
 			if(!File.Exists(file))
