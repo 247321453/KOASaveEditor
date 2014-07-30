@@ -51,6 +51,7 @@ namespace KOASaveEditor
 			this.helpHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.gitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.downloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tb_bagcount = new System.Windows.Forms.TextBox();
 			this.tb_allexp = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -95,7 +96,9 @@ namespace KOASaveEditor
 			this.btn_addeffect = new System.Windows.Forms.Button();
 			this.tb_equipcode = new System.Windows.Forms.TextBox();
 			this.label10 = new System.Windows.Forms.Label();
-			this.downloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.label2 = new System.Windows.Forms.Label();
+			this.tb_money = new System.Windows.Forms.TextBox();
+			this.btn_modmoney = new System.Windows.Forms.Button();
 			this.menuStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -206,20 +209,27 @@ namespace KOASaveEditor
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
 			this.aboutToolStripMenuItem.Text = "关于(&A)";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
 			// 
 			// gitToolStripMenuItem
 			// 
 			this.gitToolStripMenuItem.Name = "gitToolStripMenuItem";
-			this.gitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.gitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
 			this.gitToolStripMenuItem.Text = "源代码";
 			this.gitToolStripMenuItem.Click += new System.EventHandler(this.GitToolStripMenuItemClick);
 			// 
+			// downloadToolStripMenuItem
+			// 
+			this.downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
+			this.downloadToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+			this.downloadToolStripMenuItem.Text = "下载最新版本";
+			this.downloadToolStripMenuItem.Click += new System.EventHandler(this.DownloadToolStripMenuItemClick);
+			// 
 			// tb_bagcount
 			// 
-			this.tb_bagcount.Location = new System.Drawing.Point(553, 85);
+			this.tb_bagcount.Location = new System.Drawing.Point(548, 85);
 			this.tb_bagcount.Name = "tb_bagcount";
 			this.tb_bagcount.Size = new System.Drawing.Size(100, 21);
 			this.tb_bagcount.TabIndex = 3;
@@ -261,7 +271,7 @@ namespace KOASaveEditor
 			// 
 			// tb_name
 			// 
-			this.tb_name.Location = new System.Drawing.Point(553, 29);
+			this.tb_name.Location = new System.Drawing.Point(547, 29);
 			this.tb_name.Name = "tb_name";
 			this.tb_name.Size = new System.Drawing.Size(172, 21);
 			this.tb_name.TabIndex = 3;
@@ -277,9 +287,9 @@ namespace KOASaveEditor
 			// 
 			// btn_modname
 			// 
-			this.btn_modname.Location = new System.Drawing.Point(553, 56);
+			this.btn_modname.Location = new System.Drawing.Point(548, 56);
 			this.btn_modname.Name = "btn_modname";
-			this.btn_modname.Size = new System.Drawing.Size(171, 23);
+			this.btn_modname.Size = new System.Drawing.Size(175, 23);
 			this.btn_modname.TabIndex = 0;
 			this.btn_modname.Text = "修改名字";
 			this.btn_modname.UseVisualStyleBackColor = true;
@@ -322,11 +332,11 @@ namespace KOASaveEditor
 			// 
 			// btn_modbag
 			// 
-			this.btn_modbag.Location = new System.Drawing.Point(657, 83);
+			this.btn_modbag.Location = new System.Drawing.Point(651, 83);
 			this.btn_modbag.Name = "btn_modbag";
-			this.btn_modbag.Size = new System.Drawing.Size(68, 23);
+			this.btn_modbag.Size = new System.Drawing.Size(74, 23);
 			this.btn_modbag.TabIndex = 0;
-			this.btn_modbag.Text = "修改";
+			this.btn_modbag.Text = "修改背包";
 			this.btn_modbag.UseVisualStyleBackColor = true;
 			this.btn_modbag.Click += new System.EventHandler(this.btn_ModBagClick);
 			// 
@@ -354,7 +364,7 @@ namespace KOASaveEditor
 			this.lv_equips.Location = new System.Drawing.Point(2, 27);
 			this.lv_equips.Name = "lv_equips";
 			this.lv_equips.ShowItemToolTips = true;
-			this.lv_equips.Size = new System.Drawing.Size(480, 205);
+			this.lv_equips.Size = new System.Drawing.Size(480, 239);
 			this.lv_equips.TabIndex = 6;
 			this.lv_equips.UseCompatibleStateImageBehavior = false;
 			this.lv_equips.View = System.Windows.Forms.View.Details;
@@ -422,7 +432,7 @@ namespace KOASaveEditor
 			this.groupBox1.Controls.Add(this.label5);
 			this.groupBox1.Controls.Add(this.label13);
 			this.groupBox1.Controls.Add(this.label6);
-			this.groupBox1.Location = new System.Drawing.Point(488, 108);
+			this.groupBox1.Location = new System.Drawing.Point(488, 140);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(237, 124);
 			this.groupBox1.TabIndex = 7;
@@ -531,7 +541,7 @@ namespace KOASaveEditor
 			this.groupBox3.Controls.Add(this.label10);
 			this.groupBox3.Controls.Add(this.btn_saveequip);
 			this.groupBox3.Controls.Add(this.btn_delequip);
-			this.groupBox3.Location = new System.Drawing.Point(2, 234);
+			this.groupBox3.Location = new System.Drawing.Point(2, 268);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(719, 235);
 			this.groupBox3.TabIndex = 8;
@@ -621,24 +631,46 @@ namespace KOASaveEditor
 			this.label10.TabIndex = 4;
 			this.label10.Text = "装备ID";
 			// 
-			// downloadToolStripMenuItem
+			// label2
 			// 
-			this.downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
-			this.downloadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.downloadToolStripMenuItem.Text = "下载最新版本";
-			this.downloadToolStripMenuItem.Click += new System.EventHandler(this.DownloadToolStripMenuItemClick);
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(494, 118);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(29, 12);
+			this.label2.TabIndex = 4;
+			this.label2.Text = "金钱";
+			// 
+			// tb_money
+			// 
+			this.tb_money.Location = new System.Drawing.Point(547, 114);
+			this.tb_money.Name = "tb_money";
+			this.tb_money.Size = new System.Drawing.Size(100, 21);
+			this.tb_money.TabIndex = 3;
+			// 
+			// btn_modmoney
+			// 
+			this.btn_modmoney.Location = new System.Drawing.Point(652, 113);
+			this.btn_modmoney.Name = "btn_modmoney";
+			this.btn_modmoney.Size = new System.Drawing.Size(70, 23);
+			this.btn_modmoney.TabIndex = 9;
+			this.btn_modmoney.Text = "修改金钱";
+			this.btn_modmoney.UseVisualStyleBackColor = true;
+			this.btn_modmoney.Click += new System.EventHandler(this.Btn_modmoneyClick);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(734, 462);
+			this.ClientSize = new System.Drawing.Size(734, 503);
+			this.Controls.Add(this.btn_modmoney);
 			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.lv_equips);
 			this.Controls.Add(this.label4);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.tb_name);
+			this.Controls.Add(this.tb_money);
 			this.Controls.Add(this.tb_bagcount);
 			this.Controls.Add(this.btn_modname);
 			this.Controls.Add(this.btn_modbag);
@@ -657,6 +689,9 @@ namespace KOASaveEditor
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Button btn_modmoney;
+		private System.Windows.Forms.TextBox tb_money;
+		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.ToolStripMenuItem downloadToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem gitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;

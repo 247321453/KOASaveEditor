@@ -23,7 +23,7 @@ namespace KOASaveEditor
 	{
 		#region init
 		string skPath,thPath;
-		KOAEditor roaedit;
+		KOAEditor koaedit;
 		string title;
 		string effectFile;
 		SortedList<int, EquipItem> searchEitems;
@@ -34,7 +34,7 @@ namespace KOASaveEditor
 			skPath=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"SKIDROW\\102500\\Storage");
 			InitializeComponent();
 			effectFile=Path.Combine(Application.StartupPath,"attribute.txt");
-			roaedit=new KOAEditor(effectFile);
+			koaedit=new KOAEditor(effectFile);
 			this.Text+=" Ver:"+Application.ProductVersion;
 			title=this.Text;
 			cb_level.Items.Clear();
@@ -71,20 +71,21 @@ namespace KOASaveEditor
 		void LoadSave(string savefile)
 		{
 			this.Text=Path.GetFileName(savefile)+" - "+title;
-			roaedit.Open(savefile);
-			tb_bagcount.Text=roaedit.GetBagCount().ToString();
-			tb_name.Text=roaedit.GetnPlayerName();
-			roaedit.GetEquips();
-			searchEitems=roaedit.Eitems;
-			RefreshEquips();
+			koaedit.Open(savefile);
+			GetSaveInfo();
 		}
 		void ReloadToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			roaedit.Reload();
-			tb_bagcount.Text=roaedit.GetBagCount().ToString();
-			tb_name.Text=roaedit.GetnPlayerName();
-			roaedit.GetEquips();
-			searchEitems=roaedit.Eitems;
+			koaedit.Reload();
+			GetSaveInfo();
+		}
+		void GetSaveInfo()
+		{
+			tb_bagcount.Text=koaedit.GetBagCount().ToString();
+			tb_name.Text=koaedit.GetPlayerName();
+			tb_money.Text=koaedit.GetMoney().ToString();
+			koaedit.GetEquips();
+			searchEitems=koaedit.Eitems;
 			RefreshEquips();
 		}
 		#endregion
@@ -111,7 +112,7 @@ namespace KOASaveEditor
 		}
 		void SaveToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			roaedit.Save();
+			koaedit.Save();
 		}
 		
 		void ToolStripMenuItem1Click(object sender, EventArgs e)
@@ -121,7 +122,7 @@ namespace KOASaveEditor
 				sf.Filter=savfilter;
 				if(sf.ShowDialog()==DialogResult.OK)
 				{
-					roaedit.SaveAs(sf.FileName);
+					koaedit.SaveAs(sf.FileName);
 				}
 			}
 		}
@@ -142,14 +143,14 @@ namespace KOASaveEditor
 		}
 		#endregion
 		
-		#region bag name
+		#region bag name money
 		void btn_modnameClick(object sender, EventArgs e)
 		{
 			string name=tb_name.Text;
-			if(!roaedit.SetPlayerName(name))
+			if(!koaedit.SetPlayerName(name))
 			{
 				MessageBox.Show("名字修改失败！","警告");
-				tb_name.Text=roaedit.GetnPlayerName();
+				tb_name.Text=koaedit.GetPlayerName();
 				return;
 			}
 		}
@@ -157,9 +158,21 @@ namespace KOASaveEditor
 		{
 			int count;
 			int.TryParse(tb_bagcount.Text, out count);
-			if(!roaedit.SetBagCount(count))
+			if(!koaedit.SetBagCount(count))
 			{
 				MessageBox.Show("修改失败!\n1、背包数量不能为0\n2、背包数不能超过"+KOAEditor.bagMaxCount.ToString(),"警告");
+			}
+		}
+		void Btn_modmoneyClick(object sender, EventArgs e)
+		{
+			int mon;
+			int.TryParse(tb_money.Text, out mon);
+			if(mon>0)
+			{
+				if(!koaedit.SetMoney(mon))
+				{
+					MessageBox.Show("修改金钱失败！","错误");
+				}
 			}
 		}
 		#endregion
@@ -171,11 +184,11 @@ namespace KOASaveEditor
 			int.TryParse(cb_level.Text, out level);
 			int nowexp;
 			int.TryParse(tb_curexp.Text, out nowexp);
-			nowexp=roaedit.GetExp(level, nowexp);
+			nowexp=koaedit.GetExp(level, nowexp);
 			if(nowexp>0)
 			{
-				tb_allexp.Text=roaedit.allExp.ToString();
-				tb_nextexp.Text=roaedit.nextExp.ToString();
+				tb_allexp.Text=koaedit.allExp.ToString();
+				tb_nextexp.Text=koaedit.nextExp.ToString();
 				//tb_curexp.Text=roaedit.curExp.ToString();
 			}
 			else
@@ -188,7 +201,7 @@ namespace KOASaveEditor
 		{
 			int nowexp;
 			int.TryParse(tb_allexp.Text,out nowexp);
-			if(!roaedit.SetExp(nowexp))
+			if(!koaedit.SetExp(nowexp))
 			{
 				MessageBox.Show("修改经验失败！","错误");
 			}
@@ -197,7 +210,7 @@ namespace KOASaveEditor
 		{
 			int level;
 			int.TryParse(cb_level.Text,out level);
-			if(!roaedit.SetLevel(level))
+			if(!koaedit.SetLevel(level))
 			{
 				MessageBox.Show("修改等级失败！","错误");
 			}
@@ -210,8 +223,8 @@ namespace KOASaveEditor
 			float curdur,maxdur;
 			float.TryParse(tb_searchcurdur.Text, out curdur);
 			float.TryParse(tb_searchmaxdur.Text, out maxdur);
-			roaedit.Search(tb_searchname.Text, curdur, maxdur);
-			searchEitems=roaedit.searchEitems;
+			koaedit.Search(tb_searchname.Text, curdur, maxdur);
+			searchEitems=koaedit.searchEitems;
 			RefreshEquips();
 		}
 		
@@ -266,14 +279,14 @@ namespace KOASaveEditor
 				nowequip.Code=icode;
 			nowequip.Name=name;
 
-			roaedit.SaveEquip(nowequip);
+			koaedit.SaveEquip(nowequip);
 			SetEuqip(nowequip);
 			RefreshEquips();
 		}
 		
 		void btn_DeleteEquipClick(object sender, EventArgs e)
 		{
-			roaedit.DeleteEquipByIndex(GetCurEquipIndex());
+			koaedit.DeleteEquipByIndex(GetCurEquipIndex());
 		}
 		#endregion
 		
@@ -373,6 +386,7 @@ namespace KOASaveEditor
 			}
 		}
 		#endregion
+
 
 	}
 }

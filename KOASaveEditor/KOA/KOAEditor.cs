@@ -26,13 +26,14 @@ namespace KOASaveEditor.KOA
 		public KOAEditor(string effectFile)
 		{
 			bitstream=new BitStream();
-			pos_bagcount=-1;
+			playername="";
 			equitHead = new byte[]{0x0B,0,0,0, 0x68,0xD5, 0x24,0 ,3};
 			sepbyte=new byte[]{6,0,0,0,0,0,0,0};
 			Eitems=new SortedList<int, EquipItem>();
 			searchEitems=new SortedList<int, EquipItem>();
 			Effect.LoadEffect(effectFile);
 		}
+		public static string bagkey="current_inventory_count";
 		/// <summary>
 		/// 装备属性头部指示属性数量的数据相对装备数据头部的偏移量
 		/// </summary>
@@ -54,13 +55,16 @@ namespace KOASaveEditor.KOA
 			}
 		}
 		BitStream bitstream;
-		int pos_bagcount;
-		int pos_exp;
+		
 		string filename;
 
 		byte[] equitHead;
 		byte[] sepbyte;
 		
+		/// <summary>
+		/// 当前金钱
+		/// </summary>
+		public int money;
 		string playername;
 		/// <summary>
 		/// 当背包上限
@@ -213,13 +217,12 @@ namespace KOASaveEditor.KOA
 			if(!isOpen)
 				return -1;
 			int count=-1;
-			string key="current_inventory_count";
-			int len=Encoding.Default.GetBytes(key).Length;
-			int index=bitstream.Find(0, key);
+			
+			int index=bitstream.Find(0, KOAEditor.bagkey);
 			int p=0;
 			if(index>=0)
 			{
-				p=index+len;
+				p=index+KOAEditor.bagkey.Length;
 				byte[] bytes=new byte[12];
 				bytes[0]=3;
 				bytes[4]=6;
@@ -235,7 +238,6 @@ namespace KOASaveEditor.KOA
 							int num=bitstream.GetInt32(j);
 							if(num>=50)
 							{
-								pos_bagcount=j;
 								count=num;
 								break;
 							}
@@ -263,9 +265,20 @@ namespace KOASaveEditor.KOA
 				return false;
 			if(count>0 && count< KOAEditor.bagMaxCount)
 			{
-				bitstream.Remove(pos_bagcount, 4);
-				bitstream.InsertInt32(pos_bagcount, count);
-				return true;
+				int index=bitstream.Find(0, KOAEditor.bagkey);
+				if(index>0)
+				{
+					List<byte> bagbytes=new List<byte>();
+					bagbytes.AddRange(sepbyte);
+					bagbytes.AddRange(BitConverter.GetBytes(bagCount));
+					index=bitstream.Find(index, bagbytes.ToArray());
+					if(index>0)
+					{
+						bitstream.Remove(index+sepbyte.Length, 4);
+						bitstream.InsertInt32(index+sepbyte.Length, count);
+						return true;
+					}
+				}
 			}
 			return false;
 		}
@@ -474,7 +487,6 @@ namespace KOASaveEditor.KOA
 			int index=bitstream.Find(0, bytes.ToArray());
 			if(index>=0)
 			{
-				pos_exp=index;
 				return allExp;
 			}
 			return -1;
@@ -488,11 +500,20 @@ namespace KOASaveEditor.KOA
 		{
 			if(!isOpen)
 				return false;
-			bitstream.Remove(pos_exp, 4+8+4);
-			bitstream.InsertInt32(pos_exp, exp);
-			bitstream.InsertBytes(pos_exp+4,sepbyte);
-			bitstream.InsertInt32(pos_exp+4+8, exp);
-			return true;
+			List<byte> bytes=new List<byte>();
+			bytes.AddRange(BitConverter.GetBytes(allExp));
+			bytes.AddRange(sepbyte);
+			bytes.AddRange(BitConverter.GetBytes(allExp));
+			int index=bitstream.Find(0, bytes.ToArray());
+			if(index>0)
+			{
+				bitstream.Remove(index, 4+8+4);
+				bitstream.InsertInt32(index, exp);
+				bitstream.InsertBytes(index+4,sepbyte);
+				bitstream.InsertInt32(index+4+8, exp);
+				return true;
+			}
+			return false;
 		}
 		/// <summary>
 		/// 保存等级
@@ -511,7 +532,7 @@ namespace KOASaveEditor.KOA
 		/// 获取玩家名
 		/// </summary>
 		/// <returns></returns>
-		public string GetnPlayerName()
+		public string GetPlayerName()
 		{
 			if(!isOpen)
 				return "";
@@ -544,6 +565,45 @@ namespace KOASaveEditor.KOA
 				bitstream.InsertBytes(index, nowname);
 			}
 			return true;
+		}
+		#endregion
+		#region money
+		/// <summary>
+		/// 获取金钱
+		/// </summary>
+		/// <returns>当前金钱，失败则返回-1</returns>
+		public int GetMoney()
+		{
+			if(string.IsNullOrEmpty(playername))
+				GetPlayerName();
+			byte[] oldname=bitstream.GetBytesByString(playername);
+			int index=bitstream.Find(nameIndex+oldname.Length, oldname);
+			if(index>0)
+			{
+				return bitstream.GetInt32(index-4);
+			}
+			return -1;
+		}
+		/// <summary>
+		/// 设置金钱
+		/// </summary>
+		/// <param name="money">新金钱</param>
+		/// <returns>是否成功</returns>
+		public bool SetMoney(int money)
+		{
+			if(money<=0 || money > int.MaxValue || this.money<0)
+				return false;
+			this.money=money;
+			byte[] oldname=bitstream.GetBytesByString(playername);
+			int index=bitstream.Find(nameIndex+oldname.Length, oldname);
+			if(index>0)
+			{
+				int p=index-4;
+				bitstream.Remove(p, 4);
+				bitstream.InsertInt32(p, money);
+				return true;
+			}
+			return false;
 		}
 		#endregion
 	}
