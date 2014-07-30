@@ -1,4 +1,4 @@
 KOASaveEditor
 =============
 
-KOASaveEditor for ROA 1.0.2
+KOASaveEditor for KOA 1.0.2
