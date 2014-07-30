@@ -16,7 +16,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
     <StartupObject>KOASaveEditor.Program</StartupObject>
-    <ApplicationIcon>roa.ico</ApplicationIcon>
+    <ApplicationIcon>koa.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -59,7 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KOA\Effect.cs" />
     <Compile Include="KOA\Equip.cs" />
-    <Compile Include="KOA\ROAEditor.cs" />
+    <Compile Include="KOA\KOAEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="KOA" />
@@ -70,7 +70,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="roa.ico" />
+    <None Include="koa.ico" />
     <None Include="attribute.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
