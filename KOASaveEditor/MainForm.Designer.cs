@@ -50,6 +50,7 @@ namespace KOASaveEditor
 			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.gitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tb_bagcount = new System.Windows.Forms.TextBox();
 			this.tb_allexp = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -94,6 +95,7 @@ namespace KOASaveEditor
 			this.btn_addeffect = new System.Windows.Forms.Button();
 			this.tb_equipcode = new System.Windows.Forms.TextBox();
 			this.label10 = new System.Windows.Forms.Label();
+			this.downloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -194,7 +196,9 @@ namespace KOASaveEditor
 			// helpHToolStripMenuItem
 			// 
 			this.helpHToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.aboutToolStripMenuItem});
+									this.aboutToolStripMenuItem,
+									this.gitToolStripMenuItem,
+									this.downloadToolStripMenuItem});
 			this.helpHToolStripMenuItem.Name = "helpHToolStripMenuItem";
 			this.helpHToolStripMenuItem.Size = new System.Drawing.Size(61, 21);
 			this.helpHToolStripMenuItem.Text = "帮助(&H)";
@@ -202,9 +206,16 @@ namespace KOASaveEditor
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.aboutToolStripMenuItem.Text = "关于(&A)";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
+			// 
+			// gitToolStripMenuItem
+			// 
+			this.gitToolStripMenuItem.Name = "gitToolStripMenuItem";
+			this.gitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.gitToolStripMenuItem.Text = "源代码";
+			this.gitToolStripMenuItem.Click += new System.EventHandler(this.GitToolStripMenuItemClick);
 			// 
 			// tb_bagcount
 			// 
@@ -610,6 +621,13 @@ namespace KOASaveEditor
 			this.label10.TabIndex = 4;
 			this.label10.Text = "装备ID";
 			// 
+			// downloadToolStripMenuItem
+			// 
+			this.downloadToolStripMenuItem.Name = "downloadToolStripMenuItem";
+			this.downloadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.downloadToolStripMenuItem.Text = "下载最新版本";
+			this.downloadToolStripMenuItem.Click += new System.EventHandler(this.DownloadToolStripMenuItemClick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -639,6 +657,8 @@ namespace KOASaveEditor
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem downloadToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem gitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.Button btn_deleffect;

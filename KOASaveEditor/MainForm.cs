@@ -127,7 +127,17 @@ namespace KOASaveEditor
 		
 		void AboutToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			MessageBox.Show("本存档修改器只适用于版本:"+KOAEditor.GameVersion,"关于");
+			MessageBox.Show("本存档修改器只适用于版本:"+KOAEditor.GameVersion
+			                +"\n查找经验：根据等级和当前经验。","关于");
+		}
+		
+		void GitToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://github.com/247321453/KOASaveEditor");
+		}
+		void DownloadToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://github.com/247321453/KOASaveEditor/raw/master/win32/win32.zip");
 		}
 		#endregion
 		
@@ -308,7 +318,6 @@ namespace KOASaveEditor
 		
 		#endregion
 		
-		
 		#region effect
 		int GetEffectCode()
 		{
@@ -363,7 +372,6 @@ namespace KOASaveEditor
 			}
 		}
 		#endregion
-		
 
 	}
 }
