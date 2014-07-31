@@ -213,7 +213,7 @@ namespace KOASaveEditor
 			// 
 			this.btn_getexp.Location = new System.Drawing.Point(163, 49);
 			this.btn_getexp.Name = "btn_getexp";
-			this.btn_getexp.Size = new System.Drawing.Size(70, 40);
+			this.btn_getexp.Size = new System.Drawing.Size(73, 40);
 			this.btn_getexp.TabIndex = 0;
 			this.btn_getexp.Text = "查找经验";
 			this.btn_getexp.UseVisualStyleBackColor = true;
@@ -248,7 +248,7 @@ namespace KOASaveEditor
 			// 
 			this.btn_modname.Location = new System.Drawing.Point(548, 56);
 			this.btn_modname.Name = "btn_modname";
-			this.btn_modname.Size = new System.Drawing.Size(175, 23);
+			this.btn_modname.Size = new System.Drawing.Size(173, 23);
 			this.btn_modname.TabIndex = 0;
 			this.btn_modname.Text = "修改名字";
 			this.btn_modname.UseVisualStyleBackColor = true;
@@ -293,7 +293,7 @@ namespace KOASaveEditor
 			// 
 			this.btn_modbag.Location = new System.Drawing.Point(651, 83);
 			this.btn_modbag.Name = "btn_modbag";
-			this.btn_modbag.Size = new System.Drawing.Size(74, 23);
+			this.btn_modbag.Size = new System.Drawing.Size(70, 23);
 			this.btn_modbag.TabIndex = 0;
 			this.btn_modbag.Text = "修改背包";
 			this.btn_modbag.UseVisualStyleBackColor = true;
@@ -320,7 +320,7 @@ namespace KOASaveEditor
 									this.columnHeader6});
 			this.lv_equips.FullRowSelect = true;
 			this.lv_equips.GridLines = true;
-			this.lv_equips.Location = new System.Drawing.Point(2, 27);
+			this.lv_equips.Location = new System.Drawing.Point(4, 27);
 			this.lv_equips.Name = "lv_equips";
 			this.lv_equips.ShowItemToolTips = true;
 			this.lv_equips.Size = new System.Drawing.Size(480, 239);
@@ -360,7 +360,7 @@ namespace KOASaveEditor
 			// btn_delequip
 			// 
 			this.btn_delequip.ForeColor = System.Drawing.Color.Maroon;
-			this.btn_delequip.Location = new System.Drawing.Point(624, 201);
+			this.btn_delequip.Location = new System.Drawing.Point(627, 201);
 			this.btn_delequip.Name = "btn_delequip";
 			this.btn_delequip.Size = new System.Drawing.Size(89, 23);
 			this.btn_delequip.TabIndex = 0;
@@ -393,7 +393,7 @@ namespace KOASaveEditor
 			this.groupBox1.Controls.Add(this.label6);
 			this.groupBox1.Location = new System.Drawing.Point(488, 140);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(237, 124);
+			this.groupBox1.Size = new System.Drawing.Size(240, 124);
 			this.groupBox1.TabIndex = 7;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "等级/经验";
@@ -460,7 +460,7 @@ namespace KOASaveEditor
 			// 
 			// button6
 			// 
-			this.button6.Location = new System.Drawing.Point(620, 13);
+			this.button6.Location = new System.Drawing.Point(626, 13);
 			this.button6.Name = "button6";
 			this.button6.Size = new System.Drawing.Size(89, 59);
 			this.button6.TabIndex = 0;
@@ -500,9 +500,9 @@ namespace KOASaveEditor
 			this.groupBox3.Controls.Add(this.label10);
 			this.groupBox3.Controls.Add(this.btn_saveequip);
 			this.groupBox3.Controls.Add(this.btn_delequip);
-			this.groupBox3.Location = new System.Drawing.Point(2, 268);
+			this.groupBox3.Location = new System.Drawing.Point(5, 268);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(719, 235);
+			this.groupBox3.Size = new System.Drawing.Size(722, 235);
 			this.groupBox3.TabIndex = 8;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "装备信息";
@@ -527,7 +527,7 @@ namespace KOASaveEditor
 			this.tb_hex.Multiline = true;
 			this.tb_hex.Name = "tb_hex";
 			this.tb_hex.ReadOnly = true;
-			this.tb_hex.Size = new System.Drawing.Size(381, 126);
+			this.tb_hex.Size = new System.Drawing.Size(384, 126);
 			this.tb_hex.TabIndex = 11;
 			this.tb_hex.Text = "XX XX XX XX 0B 00 00 00 68 D5 24 00 03";
 			// 
