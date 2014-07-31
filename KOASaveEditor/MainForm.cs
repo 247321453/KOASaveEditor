@@ -301,14 +301,15 @@ namespace KOASaveEditor
 			nowequip.Name=name;
 			//保存装备
 			koaedit.SaveEquip(nowequip);
+			koaedit.Save();
 			SetEuqip(nowequip);
 			RefreshEquips();
 		}
 		//删除当前装备
 		void btn_DeleteEquipClick(object sender, EventArgs e)
 		{
-
 			koaedit.DeleteEquipByIndex(nowequip.WeaponIndex);
+			koaedit.Save();
 		}
 		#endregion
 		
