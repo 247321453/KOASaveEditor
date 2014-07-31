@@ -86,7 +86,7 @@ namespace KOASaveEditor.KOA
 				mBitstream.Remove(temp, mBitstream.Length-temp-1);
 				if (!string.IsNullOrEmpty(value)
 				    && value!= KOAEditor.nuname
-				    && value.Length<KOAEditor.nameMaxLength
+				    && value.Length<int.MaxValue
 				   )
 				{
 					mBitstream.InsertBytes(temp, new byte[] { 1 });
@@ -172,7 +172,7 @@ namespace KOASaveEditor.KOA
 		{
 			List<Effect> list=new List<Effect>();
 			list.AddRange(Effects);
-			if(EffectCount < KOAEditor.MaxEffectCount)
+			if(EffectCount < byte.MaxValue)
 			{
 				list.Add(ef);
 				ReEffects(list.ToArray());

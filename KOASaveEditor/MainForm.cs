@@ -26,7 +26,7 @@ namespace KOASaveEditor
 		KOAEditor koaedit;
 		string title;
 		string effectFile;
-		SortedList<int, EquipItem> searchEitems;
+		List<EquipItem> EitemList;
 		EquipItem nowequip;
 		public MainForm()
 		{
@@ -43,7 +43,7 @@ namespace KOASaveEditor
 				cb_level.Items.Add(i.ToString());
 			}
 			cb_level.SelectedIndex=0;
-			searchEitems=new SortedList<int, EquipItem>();
+			EitemList=new List<EquipItem>();
 			nowequip=null;
 			cb_effect.Items.Clear();
 			foreach(string str in Effect.effecttext)
@@ -72,20 +72,23 @@ namespace KOASaveEditor
 		{
 			this.Text=Path.GetFileName(savefile)+" - "+title;
 			koaedit.Open(savefile);
-			GetSaveInfo();
+			RefreshSaveInfo();
 		}
-		void ReloadToolStripMenuItemClick(object sender, EventArgs e)
+		/// <summary>刷新存档信息</summary>
+		void RefreshSaveInfo()
 		{
-			koaedit.Reload();
-			GetSaveInfo();
-		}
-		void GetSaveInfo()
-		{
-			tb_bagcount.Text=koaedit.GetBagCount().ToString();
-			tb_name.Text=koaedit.GetPlayerName();
-			tb_money.Text=koaedit.GetMoney().ToString();
-			koaedit.GetEquips();
-			searchEitems=koaedit.Eitems;
+			koaedit.LoadPlayer();
+			tb_bagcount.Text=koaedit.player.bagcount.ToString();
+			tb_name.Text=koaedit.player.name;
+			tb_money.Text=koaedit.player.money.ToString();
+			
+			tb_curexp.Text=koaedit.player.curexp.ToString();
+			tb_nextexp.Text=koaedit.player.nextexp.ToString();
+			tb_allexp.Text=koaedit.player.allexp.ToString();
+			cb_level.SelectedIndex=koaedit.player.level;
+			
+			EitemList.Clear();
+			EitemList.AddRange(koaedit.player.equips.ToArray());
 			RefreshEquips();
 		}
 		#endregion
@@ -110,22 +113,6 @@ namespace KOASaveEditor
 		{
 			Application.Exit();
 		}
-		void SaveToolStripMenuItemClick(object sender, EventArgs e)
-		{
-			koaedit.Save();
-		}
-		
-		void ToolStripMenuItem1Click(object sender, EventArgs e)
-		{
-			using(SaveFileDialog sf=new SaveFileDialog())
-			{
-				sf.Filter=savfilter;
-				if(sf.ShowDialog()==DialogResult.OK)
-				{
-					koaedit.SaveAs(sf.FileName);
-				}
-			}
-		}
 		
 		void AboutToolStripMenuItemClick(object sender, EventArgs e)
 		{
@@ -144,90 +131,122 @@ namespace KOASaveEditor
 		#endregion
 		
 		#region bag name money
-		void btn_modnameClick(object sender, EventArgs e)
+		//修改名字
+		void btn_ModNameClick(object sender, EventArgs e)
 		{
 			string name=tb_name.Text;
+			//输入为空，或者和原来的一样，就不需要修改
+			if(string.IsNullOrEmpty(name) || koaedit.player.name==name)
+				return ;
 			if(!koaedit.SetPlayerName(name))
 			{
 				MessageBox.Show("名字修改失败！","警告");
-				tb_name.Text=koaedit.GetPlayerName();
-				return;
 			}
+			else
+				koaedit.Save();//保存
+			RefreshSaveInfo();
 		}
+		//修改背包上限
 		void btn_ModBagClick(object sender, EventArgs e)
 		{
 			int count;
 			int.TryParse(tb_bagcount.Text, out count);
+			//输入不正确，或者和原来一样，就不需要修改
+			if(count == 0 || count==koaedit.player.bagcount)
+				return;
 			if(!koaedit.SetBagCount(count))
 			{
-				MessageBox.Show("修改失败!\n1、背包数量不能为0\n2、背包数不能超过"+KOAEditor.bagMaxCount.ToString(),"警告");
+				MessageBox.Show("修改失败!\n"
+				                +"1、背包数量不能为0\n"
+				                +"2、背包数不能超过"+int.MaxValue.ToString()
+				                ,"警告");
 			}
+			else
+				koaedit.Save();
+			RefreshSaveInfo();
 		}
+		//修改金钱
 		void Btn_modmoneyClick(object sender, EventArgs e)
 		{
 			int mon;
 			int.TryParse(tb_money.Text, out mon);
-			if(mon>0)
+			//输入不正确，或者和原来一样，就不需要修改
+			if(mon == 0 || koaedit.player.money==mon)
+				return;
+			if(!koaedit.SetMoney(mon))
 			{
-				if(!koaedit.SetMoney(mon))
-				{
-					MessageBox.Show("修改金钱失败！","错误");
-				}
+				MessageBox.Show("修改金钱失败！","错误");
+				
 			}
+			else
+				koaedit.Save();
+			RefreshSaveInfo();
 		}
 		#endregion
 		
 		#region exp
+		//搜索经验的位置
 		void btn_GetExpClick(object sender, EventArgs e)
 		{
 			int level;
 			int.TryParse(cb_level.Text, out level);
 			int nowexp;
 			int.TryParse(tb_curexp.Text, out nowexp);
-			nowexp=koaedit.GetExp(level, nowexp);
-			if(nowexp>0)
+			koaedit.SearchExp(level, nowexp);
+			if(koaedit.player.allexp>0)
 			{
-				tb_allexp.Text=koaedit.allExp.ToString();
-				tb_nextexp.Text=koaedit.nextExp.ToString();
-				//tb_curexp.Text=roaedit.curExp.ToString();
+				RefreshSaveInfo();
 			}
 			else
 			{
 				MessageBox.Show("查找经验值失败！","错误");
 			}
 		}
-		
+		//修改经验
 		void btn_ModExpClick(object sender, EventArgs e)
 		{
 			int nowexp;
 			int.TryParse(tb_allexp.Text,out nowexp);
+			if(nowexp==0
+			   || koaedit.player.allexp==nowexp)
+				return ;
 			if(!koaedit.SetExp(nowexp))
 			{
 				MessageBox.Show("修改经验失败！","错误");
 			}
+			else
+				koaedit.Save();
+			RefreshSaveInfo();
 		}
+		//按等级修改经验
 		void btn_ModLevelClick(object sender, EventArgs e)
 		{
 			int level;
 			int.TryParse(cb_level.Text,out level);
+			if(level==0 || koaedit.player.level==level)
+				return;
 			if(!koaedit.SetLevel(level))
 			{
 				MessageBox.Show("修改等级失败！","错误");
 			}
+			else
+				koaedit.Save();
+			RefreshSaveInfo();
 		}
 		#endregion
 		
 		#region equip
+		//查找装备信息
 		void btn_FindEquipClick(object sender, EventArgs e)
 		{
 			float curdur,maxdur;
 			float.TryParse(tb_searchcurdur.Text, out curdur);
 			float.TryParse(tb_searchmaxdur.Text, out maxdur);
-			koaedit.Search(tb_searchname.Text, curdur, maxdur);
-			searchEitems=koaedit.searchEitems;
+			EitemList.Clear();
+			EitemList.AddRange(koaedit.Search(tb_searchname.Text, curdur, maxdur));
 			RefreshEquips();
 		}
-		
+		//显示装备信息
 		void SetEuqip(EquipItem eitem)
 		{
 			tb_searchname.Text=eitem.Name;
@@ -259,6 +278,7 @@ namespace KOASaveEditor
 			MessageBox.Show(BitConverter.ToString(nowequip.Datas).Replace("-"," "));
 			#endif
 		}
+		//修改装备
 		void btn_ModEquipClick(object sender, EventArgs e)
 		{
 			string name=tb_searchname.Text;
@@ -277,16 +297,18 @@ namespace KOASaveEditor
 				nowequip.MaxDurability=imaxdur;
 			if(icode>0 && nowequip.Code!=icode)
 				nowequip.Code=icode;
+			
 			nowequip.Name=name;
-
+			//保存装备
 			koaedit.SaveEquip(nowequip);
 			SetEuqip(nowequip);
 			RefreshEquips();
 		}
-		
+		//删除当前装备
 		void btn_DeleteEquipClick(object sender, EventArgs e)
 		{
-			koaedit.DeleteEquipByIndex(GetCurEquipIndex());
+
+			koaedit.DeleteEquipByIndex(nowequip.WeaponIndex);
 		}
 		#endregion
 		
@@ -302,9 +324,10 @@ namespace KOASaveEditor
 		void RefreshEquips()
 		{
 			lv_equips.Items.Clear();
-			ListViewItem[] lvitems=new ListViewItem[searchEitems.Count];
+			
+			ListViewItem[] lvitems=new ListViewItem[EitemList.Count];
 			int i=0;
-			foreach(EquipItem eitem in searchEitems.Values)
+			foreach(EquipItem eitem in EitemList)
 			{
 				lvitems[i]=new ListViewItem();
 				lvitems[i].Text=eitem.WeaponIndex.ToString();
@@ -320,19 +343,23 @@ namespace KOASaveEditor
 				i++;
 			}
 			lv_equips.Items.AddRange(lvitems);
+			
+			lv_effect.Items.Clear();
+			
 		}
 		
 		
 		void Lv_equipsSelectedIndexChanged(object sender, EventArgs e)
 		{
 			int index=GetCurEquipIndex();
-			nowequip=searchEitems.Values[index];
+			nowequip=EitemList[index];
 			SetEuqip(nowequip);
 		}
 		
 		#endregion
 		
 		#region effect
+		//从combobox的文字获取效果代码
 		int GetEffectCode()
 		{
 			int id;
@@ -354,9 +381,12 @@ namespace KOASaveEditor
 				MessageBox.Show("效果格式错误！格式：XXXXXX 描述","警告");
 			return 0;
 		}
+		
 		void Btn_AddEffectClick(object sender, EventArgs e)
 		{
 			int id=GetEffectCode();
+			if(id<=0)
+				return;
 			if(nowequip.AddEffect(new Effect(id)))
 			{
 				//test();
@@ -364,7 +394,7 @@ namespace KOASaveEditor
 				RefreshEquips();
 			}
 			else
-				MessageBox.Show("添加失败！\n可能是效果超过最大值："+KOAEditor.MaxEffectCount.ToString(),"错误");
+				MessageBox.Show("添加失败！\n可能是效果超过最大值："+byte.MaxValue.ToString(),"错误");
 		}
 		
 		void Btn_deleffectClick(object sender, EventArgs e)
@@ -374,8 +404,9 @@ namespace KOASaveEditor
 				string sid=lv_effect.SelectedItems[0].Text;
 				int id;
 				int.TryParse(sid, NumberStyles.HexNumber,null,out id);
-				
-
+				if(id<=0)
+					return;
+				//根据效果代码删除效果
 				if(nowequip.RemoveEffect(new Effect(id)))
 				{
 					SetEuqip(nowequip);
@@ -386,7 +417,6 @@ namespace KOASaveEditor
 			}
 		}
 		#endregion
-
 
 	}
 }

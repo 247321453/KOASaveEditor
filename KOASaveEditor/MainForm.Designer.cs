@@ -42,11 +42,6 @@ namespace KOASaveEditor
 			this.openSkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openThToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpHToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,11 +117,6 @@ namespace KOASaveEditor
 									this.openSkToolStripMenuItem,
 									this.openThToolStripMenuItem,
 									this.toolStripSeparator3,
-									this.reloadToolStripMenuItem,
-									this.toolStripSeparator1,
-									this.saveToolStripMenuItem,
-									this.toolStripMenuItem1,
-									this.toolStripSeparator2,
 									this.quitToolStripMenuItem});
 			this.fileFToolStripMenuItem.Name = "fileFToolStripMenuItem";
 			this.fileFToolStripMenuItem.Size = new System.Drawing.Size(58, 21);
@@ -157,37 +147,6 @@ namespace KOASaveEditor
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
 			this.toolStripSeparator3.Size = new System.Drawing.Size(167, 6);
-			// 
-			// reloadToolStripMenuItem
-			// 
-			this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-			this.reloadToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.reloadToolStripMenuItem.Text = "重新加载存档";
-			this.reloadToolStripMenuItem.Click += new System.EventHandler(this.ReloadToolStripMenuItemClick);
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(167, 6);
-			// 
-			// saveToolStripMenuItem
-			// 
-			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
-			this.saveToolStripMenuItem.Text = "保存存档";
-			this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItemClick);
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(170, 22);
-			this.toolStripMenuItem1.Text = "另存为新存档";
-			this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1Click);
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(167, 6);
 			// 
 			// quitToolStripMenuItem
 			// 
@@ -293,7 +252,7 @@ namespace KOASaveEditor
 			this.btn_modname.TabIndex = 0;
 			this.btn_modname.Text = "修改名字";
 			this.btn_modname.UseVisualStyleBackColor = true;
-			this.btn_modname.Click += new System.EventHandler(this.btn_modnameClick);
+			this.btn_modname.Click += new System.EventHandler(this.btn_ModNameClick);
 			// 
 			// label5
 			// 
@@ -694,16 +653,12 @@ namespace KOASaveEditor
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.ToolStripMenuItem downloadToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem gitToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.Button btn_deleffect;
 		private System.Windows.Forms.Button btn_modlevel;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.TextBox tb_curexp;
 		private System.Windows.Forms.TextBox tb_hex;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.TextBox tb_equipcode;
 		private System.Windows.Forms.Button btn_addeffect;
@@ -746,7 +701,6 @@ namespace KOASaveEditor
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpHToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
-		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem openThToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openSkToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openOToolStripMenuItem;
