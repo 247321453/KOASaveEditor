@@ -213,3 +213,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/win32/KOASaveEditor.vshost.exe
+/win32/KOASaveEditor.vshost.exe.manifest

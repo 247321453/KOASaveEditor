@@ -52,7 +52,9 @@
   <ItemGroup>
     <Compile Include="BinStream.cs" />
     <Compile Include="KOA\Player.cs" />
-    <Compile Include="MainForm.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
@@ -62,9 +64,7 @@
     <Compile Include="KOA\Equip.cs" />
     <Compile Include="KOA\KOAEditor.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="KOA" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

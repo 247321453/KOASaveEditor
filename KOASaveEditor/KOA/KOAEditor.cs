@@ -67,7 +67,7 @@ namespace KOASaveEditor.KOA
 		/// <summary>
 		/// 默认名字
 		/// </summary>
-		public static string nuname="unkown";
+		public static string nuname="???";
 		
 		#endregion
 		

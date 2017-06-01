@@ -71,7 +71,7 @@ namespace KOASaveEditor.KOA
 		{
 			get
 			{
-				if (mBitstream.GetByte(KOAEditor.WeaponAttHeadOffSet + 22 + EffectCount * 8) != 1)
+				if (mBitstream.GetByte(KOAEditor.WeaponAttHeadOffSet + 0x16 + EffectCount * 8) != 1)
 				{
 					return KOAEditor.nuname;
 				}
@@ -82,7 +82,7 @@ namespace KOASaveEditor.KOA
 			}
 			set
 			{
-				int temp=KOAEditor.WeaponAttHeadOffSet + 22 + EffectCount * 8;
+				int temp=KOAEditor.WeaponAttHeadOffSet + 0x16 + EffectCount * 8;
 				mBitstream.Remove(temp, mBitstream.Length-temp-1);
 				if (!string.IsNullOrEmpty(value)
 				    && value!= KOAEditor.nuname
